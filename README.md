@@ -1,6 +1,6 @@
 # Curso NLW - Experts
 
-##Tecnologia usada
+#Tecnologia usada
 
 - HTML
 - CSS
