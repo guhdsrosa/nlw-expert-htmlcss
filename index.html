@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lista</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <section>
+            <header>
+                <img src="https://gist.githubusercontent.com/maykbrito/f47569e32fb2b21f2ecc9f4c035c141f/raw/a45997404564112d7596fbb1b9cad5de5521927e/logo.svg" alt="Logo NLW">
+                <h1>Teste seus conhecimentos</h1>
+            </header>
+
+            <div id="quiz"></div>
+
+            <template>
+                <div class="quiz-item">
+                    <h3>Pergunta 01</h3>
+
+                    <dl>
+                        <dt>
+                            <input type="radio" name="item" value="0" />
+                            <span>Resposta A</span>
+                        </dt>
+                    </dl>
+                </div>
+            </template>
+
+            <div id="acertos">
+                <strong>Acertos</strong>
+                <span>0 de 10</span>
+            </div>
+        </section>
+    </body>
+
+    <script>
+        const perguntas = [
+            {
+                pergunta:
+                    "Qual é a função do comando 'console.log()' em JavaScript?",
+                respostas: [
+                    "Exibir uma mensagem de erro",
+                    "Registrar dados no console",
+                    "Interromper a execução do código",
+                ],
+                correta: 1,
+            },
+            {
+                pergunta: "Como você declara uma variável em JavaScript?",
+                respostas: [
+                    "var minhaVar;",
+                    "let minhaVar;",
+                    "const minhaVar;",
+                ],
+                correta: 2,
+            },
+            {
+                pergunta: "O que é o DOM em JavaScript?",
+                respostas: [
+                    "Uma linguagem de programação",
+                    "Um modelo de objeto para manipular documentos HTML",
+                    "Um protocolo de rede",
+                ],
+                correta: 1,
+            },
+            {
+                pergunta:
+                    "Qual operador é utilizado para verificar igualdade de valor e tipo em JavaScript?",
+                respostas: ["===", "==", "="],
+                correta: 0,
+            },
+            {
+                pergunta: "O que é uma função em JavaScript?",
+                respostas: [
+                    "Um tipo de dado",
+                    "Um loop de repetição",
+                    "Um bloco de código reutilizável",
+                ],
+                correta: 2,
+            },
+            {
+                pergunta:
+                    "Como você comenta uma linha de código em JavaScript?",
+                respostas: [
+                    "// Comentário",
+                    "/* Comentário */",
+                    "# Comentário",
+                ],
+                correta: 0,
+            },
+            {
+                pergunta: "Qual é a função do operador 'typeof' em JavaScript?",
+                respostas: [
+                    "Comparar tipos de dados",
+                    "Retornar o tipo de uma variável",
+                    "Executar uma operação lógica",
+                ],
+                correta: 1,
+            },
+            {
+                pergunta: "O que é um array em JavaScript?",
+                respostas: [
+                    "Um tipo de dado primitivo",
+                    "Uma estrutura de controle de fluxo",
+                    "Uma coleção de elementos indexados",
+                ],
+                correta: 2,
+            },
+            {
+                pergunta:
+                    "Qual é a diferença entre 'let' e 'const' ao declarar variáveis?",
+                respostas: [
+                    "'let' é usado para constantes e 'const' para variáveis mutáveis",
+                    "'let' é escopo de bloco e 'const' é escopo global",
+                    "'let' permite reatribuição e 'const' é imutável",
+                ],
+                correta: 2,
+            },
+            {
+                pergunta:
+                    "Como você converte uma string para um número em JavaScript?",
+                respostas: ["parseInt()", "stringToNumber()", "toNumber()"],
+                correta: 0,
+            },
+        ];
+
+        const quiz = document.querySelector("#quiz");
+        const template = document.querySelector("template");
+
+        const corretas = new Set();
+        const totalDePerguntas = perguntas.length;
+        const mostrarTotal = document.querySelector("#acertos span");
+        mostrarTotal.textContent = `${corretas.size} de ${totalDePerguntas}`;
+
+        for (const item of perguntas) {
+            const quizItem = template.content.cloneNode(true);
+            quizItem.querySelector("h3").textContent = item.pergunta;
+
+            for (let resposta of item.respostas) {
+                const dt = quizItem.querySelector("dl dt").cloneNode(true);
+                dt.querySelector("span").textContent = resposta;
+
+                dt.querySelector("input").setAttribute(
+                    "name",
+                    `pergunta-${perguntas.indexOf(item)}`
+                );
+
+                dt.querySelector("input").value =
+                    item.respostas.indexOf(resposta);
+
+                dt.querySelector("input").onchange = (event) => {
+                    const estaCorreta = event.target.value == item.correta;
+
+                    corretas.delete(item);
+                    if (estaCorreta) {
+                        corretas.add(item);
+                    }
+
+                    mostrarTotal.textContent = `${corretas.size} de ${totalDePerguntas}`;
+                };
+
+                quizItem.querySelector("dl").appendChild(dt);
+            }
+
+            quizItem.querySelector("dl dt").remove();
+
+            quiz.appendChild(quizItem);
+        }
+    </script>
+</html>
